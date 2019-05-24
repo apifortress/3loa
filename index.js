@@ -21,8 +21,8 @@ const fb_demo = () => {
             "loginButton": "#login_form #loginbutton",
             "authorizeButton": "#platformDialogForm button[name=\"__CONFIRM__\"]",
         
-            "authorizationURL": "https://www.facebook.com/v3.3/dialog/oauth?client_id=355789051712034&redirect_uri=https://apifortress.com/",
-            "tokenURL": "https://graph.facebook.com/v3.3/oauth/access_token?client_id=355789051712034&client_secret=4e3e429a88460f8d9f3c84391f93bf65&redirect_uri=https://apifortress.com/"
+            "authorizationURL": "",
+            "tokenURL": ""
         }
         OAuth (opts).then (resolve);
     })
