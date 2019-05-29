@@ -1,0 +1,13 @@
+version: '2'
+networks:
+  apifortress:
+    external: true
+services:
+  apifortress-3loa:
+    image: apifortress/3loa:latest
+    networks:
+      apifortress:
+        aliases:
+        - 3loa.apifortress
+    ports:
+    - 3000:3000/tcp
