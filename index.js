@@ -43,7 +43,11 @@ const oauth_authorization = (opts) => {
     return new Promise ((resolve, reject) => {
         (async () => {
             let code        = null;
-            const browser   = await puppeteer.launch ()
+            const browser   = await puppeteer.launch ({executablePath: 'google-chrome-unstable',args: [
+                                                        '--no-sandbox',
+                                                        '--disable-setuid-sandbox',
+                                                        '--disable-dev-shm-usage'
+                                                        ]})
             const page      = await browser.newPage ()
             
             await page.goto (opts.authorizationURL);
