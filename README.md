@@ -6,7 +6,7 @@ Does your API require 3-leg authentication? Well with the help of a small helper
 
 First let's deploy the helper container, once you have the 3loa folder downloaded, navigate to that folder within a terminal window. Then run the following command to start the 3loa container:"sudo docker-compose up -d"
 
-The 3-leg helper is now live and can be access from API Fortress using the following URL:"http://3loa.apifortress:3000/oauth"
+The 3-leg helper is now live and can be access from API Fortress using the following URL: http://3loa.apifortress:3000/oauth
 
 To see it in action using the API Fortress platform, see this video.
 https://www.youtube.com/watch?v=mcghU8KRSfI
