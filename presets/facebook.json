@@ -1,0 +1,10 @@
+{
+    "username": "",
+    "password": "",
+    "usernameField": "#login_form input[name=\"email\"]",
+    "passwordField": "#login_form input[name=\"pass\"]",
+    "loginButton": "#login_form #loginbutton",
+    "authorizeButton": "#platformDialogForm button[name=\"__CONFIRM__\"]",
+    "authorizationURL": "",
+    "tokenURL": ""
+}

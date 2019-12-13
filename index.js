@@ -1,32 +1,16 @@
 const request       = require ('request');
+const fs            = require ('fs');
 const puppeteer     = require ('puppeteer');
 const express       = require ('express');
 const bodyParser    = require ('body-parser');
 
 
+const presets_base  = './presets';
 const PORT          = process.env.PORT || 3000;
 const app           = express ();
 
 
 
-
-const fb_demo = () => {
-    return new Promise ((resolve, reject) => {
-        const opts = {
-            "username": "",
-            "password": "",
-        
-            "usernameField": "#login_form input[name=\"email\"]",
-            "passwordField": "#login_form input[name=\"pass\"]",
-            "loginButton": "#login_form #loginbutton",
-            "authorizeButton": "#platformDialogForm button[name=\"__CONFIRM__\"]",
-        
-            "authorizationURL": "",
-            "tokenURL": ""
-        }
-        OAuth (opts).then (resolve);
-    })
-}
 
 const OAuth = (opts) => {
     return new Promise ((resolve, reject) => {
@@ -44,10 +28,10 @@ const oauth_authorization = (opts) => {
         (async () => {
             let code        = null;
             const browser   = await puppeteer.launch ({executablePath: 'google-chrome-unstable',args: [
-                                                        '--no-sandbox',
-                                                        '--disable-setuid-sandbox',
-                                                        '--disable-dev-shm-usage'
-                                                        ]})
+                '--no-sandbox',
+                '--disable-setuid-sandbox',
+                '--disable-dev-shm-usage'
+                ]})
             const page      = await browser.newPage ()
             
             await page.goto (opts.authorizationURL);
@@ -121,16 +105,37 @@ const oauth_token = (opts) => {
 
 app.use (bodyParser.json ());
 
-app.get ('/fbdemo', (req, res) => {
-    fb_demo().then ((result) => {
-        res.json (result);
-    })
-});
-
 app.post ('/oauth', (req, res) => {
-    OAuth (req.body).then ((result) => {
-        res.json (result)
-    })
+    if (req.body.id !== undefined) {
+        var preset_name = req.body.id + '.json',
+            preset_path = presets_base + '/' + preset_name,
+            preset_json = null;
+
+        fs.access (preset_path, fs.F_OK, (err) => {
+            if (err) {
+                res.json ({ success: false, error: 'Can\'t find the preset: ' + preset_name });
+                return;
+            }
+
+            fs.readFile (preset_path, 'utf8', (error, data) => {
+                if (error) {
+                    res.json ({ success: false, error: 'Can\'t find the preset: ' + preset_name });
+                    return;
+                }
+
+                try {
+                    preset_json = JSON.parse (data);
+                    OAuth (req.body).then ((result) => {
+                        res.json (result)
+                    })
+                } catch (exception) {
+                    res.json ({ success: false, error: 'Preset JSON parse exception: ' + exception.toString () })
+                }
+            })
+        })
+    } else {
+        
+    }
 });
 
 app.listen (PORT, () => {
